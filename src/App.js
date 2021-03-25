@@ -4,21 +4,37 @@ import axios from "axios"
 class App extends Component {
 
   state = {
-    advise : ""
+    advice : ""
   }
 
   componentDidMount(){
-    axios.get()
+    this.fetchAdvice()
   }
 
-  fetchAdvise = () => {
-    axios.get()
+  fetchAdvice = () => {
+    axios.get("https://api.adviceslip.com/advice")
+      .then((response) => {
+        const {advice} = response.data.slip
+        this.setState({
+          advice :  advice
+          //or we can write advice only (if the variable and attribute name are same)
+        })
+        console.log(advice)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   }
 
   render() {
     return (
-      <div>
-        <h1>Hello</h1>
+      <div className="app">
+        <div className="card">
+          <h1 className="heading">{this.state.advice}</h1>
+          <button className="button" onClick={this.fetchAdvice()}>
+            <span>GIVE ME AN ADVICE!</span>
+          </button>
+        </div>
       </div>
     )
   }
